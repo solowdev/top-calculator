@@ -1,0 +1,14 @@
+#displayScreen {
+  width: 200px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #0000009d;
+  margin: 10px;
+
+}
+
+#result {
+  margin-right: 5px;
+  text-align: right;
+  vertical-align: middle;
+}
