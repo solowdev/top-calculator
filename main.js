@@ -1,58 +1,97 @@
-function add(a, b) {
-  return a + b;
-}
+// | What I was working on last time? |
+// ------------------------------------
+// Cleaning my lists with string.match()
+// Reading documentation on string.match() or other ways to check for string content efficiently
 
-function subtract(a, b) {
-  return a - b;
-}
+function calculator() {
+  const operatorsAndNumbersButtons = Array.from(
+    document.getElementsByClassName(`ope-and-num`)
+  );
+  const equalButton = document.getElementById(`equal`);
+  const result = document.getElementById(`display`);
+  const resetButton = document.getElementById(`reset`);
+  let allClickedButtons = [];
+  let numbersList = [];
+  let operatorsList = [];
 
-function divide(a, b) {
-  return a / b;
-}
-
-function multiply(a, b) {
-  return a * b;
-}
-
-function operate(operator, a, b) {
-  switch (operator) {
-    case `+`:
-      add(a, b);
-      break;
-    case `-`:
-      subtract(a, b);
-      break;
-    case `*`:
-      multiply(a, b);
-      break;
-    case `/`:
-      divide(a, b);
-      break;
-    default:
-      console.log('Problem in operate');
-      break;
+  function addToDisplay(string) {
+    result.textContent += string;
   }
-}
 
-function addToDisplay(text) {
-  const result = document.getElementById('result');
-  result.textContent += text;
-}
+  function clearDisplay() {
+    result.textContent = ``;
+  }
 
-function storeNumbers(text) {
-  const numbers = [];
-  numbers.push(text);
-  addToDisplay(numbers.join());
-}
+  function createSeparateLists(data) {
+    let i = 0;
+    data.forEach(element => {
+      if (element.match(/\+|-|\*|\//) !== null) {
+        operatorsList[i] = element;
+        i += 1;
+      } else if (element.match(/\d/) !== null) {
+        if (typeof numbersList[i] === `undefined`) {
+          numbersList[i] = element;
+        } else {
+          numbersList[i] += element;
+        }
+      }
+    });
+  }
 
-const numberButtons = document.getElementsByClassName('number');
+  function cleanList(list) {
+    operatorsList = operatorsList.filter(currentElement => {
+      if (
+        currentElement.match(/\*/) !== null ||
+        currentElement.match(/\//) !== null
+      ) {
+      }
+    });
+  }
 
-function listenToEvents() {
-  for (let i = 0; i < numberButtons.length; i += 1) {
-    numberButtons[i].addEventListener(`click`, event =>
-      storeNumbers(event.target.textContent)
+  function applyPrecedence() {
+    let i = 0;
+    let j = 1;
+    operatorsList.forEach(element => {
+      if (element.match(/\*/) !== null) {
+        numbersList[i] *= numbersList[j];
+        numbersList.splice(j, 1);
+      } else if (element.match(/\//) !== null) {
+        numbersList[i] /= numbersList[j];
+        numbersList.splice(j, 1);
+      } else {
+        i += 1;
+        j += 1;
+      }
+    });
+  }
+
+  function operate() {}
+
+  function listenToEvents() {
+    operatorsAndNumbersButtons.forEach(button =>
+      button.addEventListener(`click`, event => {
+        allClickedButtons.push(event.target.textContent);
+        addToDisplay(event.target.textContent);
+      })
     );
+
+    equalButton.addEventListener(`click`, () => {
+      createSeparateLists(allClickedButtons);
+      applyPrecedence();
+      cleanList(operatorsList);
+      operate();
+      clearDisplay();
+      addToDisplay(operatorsList);
+    });
+
+    resetButton.addEventListener(`click`, () => {
+      operatorsList = [];
+      numbersList = [];
+      allClickedButtons = [];
+      clearDisplay();
+    });
   }
+  listenToEvents();
 }
 
-listenToEvents();
+calculator();
