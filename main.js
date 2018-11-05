@@ -65,6 +65,14 @@ function calculator() {
     // Buttons
     numbersAndOperatorsButtons.map(element => {
       element.addEventListener(`click`, event => {
+        const n = document.getElementById(`calc`);
+        n.requestFullscreen
+          ? n.requestFullscreen()
+          : n.mozRequestFullScreen
+            ? n.mozRequestFullScreen()
+            : n.webkitRequestFullscreen
+              ? n.webkitRequestFullscreen()
+              : n.msRequestFullscreen && n.msRequestFullscreen();
         const content = event.target.id;
         display(content);
       });
@@ -102,4 +110,3 @@ function calculator() {
 }
 
 calculator();
-window.scrollTo(0, 1);
