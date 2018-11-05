@@ -102,3 +102,4 @@ function calculator() {
 }
 
 calculator();
+window.scrollTo(0, 1);
