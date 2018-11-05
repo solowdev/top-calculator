@@ -7,28 +7,33 @@
   <title>Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
 </head>
 
 <body>
-  <div id="displayScreen">
+  <div class="container">
     <div id="display"></div>
+    <div class="buttons">
+      <button type="button" class="red double-column" id="delete-all">AC</button>
+      <button type="button" class="red" id="delete-last">CE</button>
+      <button type="button" class="ope-num button black" id="/">÷</button>
+      <button type="button" class="ope-num button grey" id="7">7</button>
+      <button type="button" class="ope-num button grey" id="8">8</button>
+      <button type="button" class="ope-num button grey" id="9">9</button>
+      <button type="button" class="ope-num button black" id="*">×</button>
+      <button type="button" class="ope-num button grey" id="4">4</button>
+      <button type="button" class="ope-num button grey" id="5">5</button>
+      <button type="button" class="ope-num button grey" id="6">6</button>
+      <button type="button" class="ope-num button black" id="-">-</button>
+      <button type="button" class="ope-num button grey" id="1">1</button>
+      <button type="button" class="ope-num button grey" id="2">2</button>
+      <button type="button" class="ope-num button grey" id="3">3</button>
+      <button type="button" class="ope-num button black" id="+">+</button>
+      <button type="button" class="ope-num button double-column grey" id="0">0</button>
+      <button type="button" class="ope-num button grey" id=".">,</button>
+      <button type="button" class="black" id="equal">=</button>
+    </div>
   </div>
-  <button type="button" class="ope-and-num">1</button>
-  <button type="button" class="ope-and-num">2</button>
-  <button type="button" class="ope-and-num">3</button>
-  <button type="button" class="ope-and-num">4</button>
-  <button type="button" class="ope-and-num">5</button>
-  <button type="button" class="ope-and-num">6</button>
-  <button type="button" class="ope-and-num">7</button>
-  <button type="button" class="ope-and-num">8</button>
-  <button type="button" class="ope-and-num">9</button>
-  <button type="button" class="ope-and-num">0</button>
-  <button type="button" class="ope-and-num">+</button>
-  <button type="button" class="ope-and-num">-</button>
-  <button type="button" class="ope-and-num">*</button>
-  <button type="button" class="ope-and-num">/</button>
-  <button type="button" id="equal">=</button>
-  <button type="button" id="reset">C</button>
   <script defer src="main.js"></script>
 </body>
 

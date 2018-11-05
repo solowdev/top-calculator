@@ -1,96 +1,99 @@
-// | What I was working on last time? |
-// ------------------------------------
-// Cleaning my lists with string.match()
-// Reading documentation on string.match() or other ways to check for string content efficiently
+/* eslint-disable no-eval */
 
 function calculator() {
-  const operatorsAndNumbersButtons = Array.from(
-    document.getElementsByClassName(`ope-and-num`)
+  // Buttons
+  const numbersAndOperatorsButtons = Array.from(
+    document.getElementsByClassName(`ope-num`)
   );
   const equalButton = document.getElementById(`equal`);
-  const result = document.getElementById(`display`);
-  const resetButton = document.getElementById(`reset`);
-  let allClickedButtons = [];
-  let numbersList = [];
-  let operatorsList = [];
+  const deleteAllButton = document.getElementById(`delete-all`);
+  const deleteLastButton = document.getElementById(`delete-last`);
+  const displayBox = document.getElementById(`display`);
 
-  function addToDisplay(string) {
-    result.textContent += string;
+  // Data
+  let result = [];
+
+  // RegExp
+  const butRegExp = /\d|\.|\+|-|\*|\//;
+  const opeRegExp = /\+|-|\*|\//;
+  const numRegExp = /\d|\./;
+  const mulDivRegExp = /\*|\//;
+
+  function modifyDisplayBox(content) {
+    displayBox.textContent = content;
   }
 
-  function clearDisplay() {
-    result.textContent = ``;
+  function equal() {
+    if (
+      opeRegExp.test(result.slice(-1)) === true ||
+      typeof result[0] === `undefined`
+    );
+    else {
+      result = `${Math.round(eval(result.join(``)) * 100000) / 100000}`;
+      modifyDisplayBox(result);
+      result = result.split(``);
+    }
   }
 
-  function createSeparateLists(data) {
-    let i = 0;
-    data.forEach(element => {
-      if (element.match(/\+|-|\*|\//) !== null) {
-        operatorsList[i] = element;
-        i += 1;
-      } else if (element.match(/\d/) !== null) {
-        if (typeof numbersList[i] === `undefined`) {
-          numbersList[i] = element;
-        } else {
-          numbersList[i] += element;
-        }
-      }
-    });
+  function display(content) {
+    if (
+      opeRegExp.test(content) === true &&
+      mulDivRegExp.test(result.slice(-1)) === false
+    ) {
+      result.push(` ${content} `);
+    } else if (numRegExp.test(content) === true) {
+      result.push(content);
+    }
+    modifyDisplayBox(result.join(``));
   }
 
-  function cleanList(list) {
-    operatorsList = operatorsList.filter(currentElement => {
-      if (
-        currentElement.match(/\*/) !== null ||
-        currentElement.match(/\//) !== null
-      ) {
-      }
-    });
+  function deleteAll() {
+    result = [];
+    modifyDisplayBox(``);
   }
 
-  function applyPrecedence() {
-    let i = 0;
-    let j = 1;
-    operatorsList.forEach(element => {
-      if (element.match(/\*/) !== null) {
-        numbersList[i] *= numbersList[j];
-        numbersList.splice(j, 1);
-      } else if (element.match(/\//) !== null) {
-        numbersList[i] /= numbersList[j];
-        numbersList.splice(j, 1);
-      } else {
-        i += 1;
-        j += 1;
-      }
-    });
+  function deleteLast() {
+    result.pop();
+    modifyDisplayBox(result.join(``));
   }
-
-  function operate() {}
 
   function listenToEvents() {
-    operatorsAndNumbersButtons.forEach(button =>
-      button.addEventListener(`click`, event => {
-        allClickedButtons.push(event.target.textContent);
-        addToDisplay(event.target.textContent);
-      })
-    );
+    // Buttons
+    numbersAndOperatorsButtons.map(element => {
+      element.addEventListener(`click`, event => {
+        const content = event.target.id;
+        display(content);
+      });
+      return true;
+    });
 
     equalButton.addEventListener(`click`, () => {
-      createSeparateLists(allClickedButtons);
-      applyPrecedence();
-      cleanList(operatorsList);
-      operate();
-      clearDisplay();
-      addToDisplay(operatorsList);
+      equal();
     });
 
-    resetButton.addEventListener(`click`, () => {
-      operatorsList = [];
-      numbersList = [];
-      allClickedButtons = [];
-      clearDisplay();
+    deleteAllButton.addEventListener(`click`, () => {
+      deleteAll();
+    });
+
+    deleteLastButton.addEventListener(`click`, () => {
+      deleteLast();
+    });
+
+    // Keyboard
+    window.addEventListener(`keydown`, keyboardEvent => {
+      if (butRegExp.test(keyboardEvent.key) === true) {
+        const content = keyboardEvent.key;
+        display(content);
+      } else if (keyboardEvent.key === `Enter`) {
+        equal();
+      } else if (keyboardEvent.key === `Delete`) {
+        deleteAll();
+      } else if (keyboardEvent.key === `Backspace`) {
+        deleteLast();
+      }
     });
   }
+
   listenToEvents();
 }
 
