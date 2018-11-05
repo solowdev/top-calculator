@@ -18,6 +18,7 @@ function calculator() {
   const opeRegExp = /\+|-|\*|\//;
   const numRegExp = /\d|\./;
   const mulDivRegExp = /\*|\//;
+  const letRegExp = /[A-Za-z]/;
 
   function modifyDisplayBox(content) {
     displayBox.textContent = content;
@@ -41,7 +42,10 @@ function calculator() {
       mulDivRegExp.test(result.slice(-1)) === false
     ) {
       result.push(` ${content} `);
-    } else if (numRegExp.test(content) === true) {
+    } else if (
+      numRegExp.test(content) === true &&
+      letRegExp.test(content) === false
+    ) {
       result.push(content);
     }
     modifyDisplayBox(result.join(``));
