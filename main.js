@@ -65,14 +65,6 @@ function calculator() {
     // Buttons
     numbersAndOperatorsButtons.map(element => {
       element.addEventListener(`click`, event => {
-        const n = document.getElementById(`calc`);
-        n.requestFullscreen
-          ? n.requestFullscreen()
-          : n.mozRequestFullScreen
-            ? n.mozRequestFullScreen()
-            : n.webkitRequestFullscreen
-              ? n.webkitRequestFullscreen()
-              : n.msRequestFullscreen && n.msRequestFullscreen();
         const content = event.target.id;
         display(content);
       });
@@ -110,3 +102,64 @@ function calculator() {
 }
 
 calculator();
+window.addEventListener(`load`, () => {
+  setTimeout(() => {
+    // This hides the address bar:
+    window.scrollTo(0, 1);
+  }, 0);
+});
+// window.addEventListener(`DOMContentLoaded`, () => {
+//   const n = document.getElementById(`calc`);
+//   n.requestFullscreen
+//     ? n.requestFullscreen()
+//     : n.mozRequestFullScreen
+//       ? n.mozRequestFullScreen()
+//       : n.webkitRequestFullscreen
+//         ? n.webkitRequestFullscreen()
+//         : n.msRequestFullscreen && n.msRequestFullscreen();
+// });
+
+function fullscreen(win) {
+  const doc = win.document;
+
+  // If there's a hash, or addEventListener is undefined, stop here
+  if (!win.navigator.standalone && !location.hash && win.addEventListener) {
+    // scroll to 1
+    win.scrollTo(0, 1);
+    let scrollTop = 1;
+
+    const getScrollTop = function() {
+      return (
+        win.pageYOffset ||
+        (doc.compatMode === `CSS1Compat` && doc.documentElement.scrollTop) ||
+        doc.body.scrollTop ||
+        0
+      );
+    };
+
+    // reset to 0 on bodyready, if needed
+
+    var bodycheck = setInterval(() => {
+      if (doc.body) {
+        clearInterval(bodycheck);
+        scrollTop = getScrollTop();
+        win.scrollTo(0, scrollTop === 1 ? 0 : 1);
+      }
+    }, 15);
+
+    win.addEventListener(
+      `load`,
+      () => {
+        setTimeout(() => {
+          // at load, if user hasn't scrolled more than 20 or so...
+          if (getScrollTop() < 20) {
+            // reset to hide addr bar at onload
+            win.scrollTo(0, scrollTop === 1 ? 0 : 1);
+          }
+        }, 0);
+      },
+      false
+    );
+  }
+}
+fullscreen();
