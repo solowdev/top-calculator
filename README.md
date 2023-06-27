@@ -2,7 +2,7 @@
 
 A simple calculator made with **fresh** JavaScript 👍
 
-Click [here](https://bricebasty.github.io/calc) to test it
+Click [here](https://celgost.github.io/calc) to test it
 
 > The Odin Project
 >
